@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triple Tung T Shirts | Premium Apparel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            500: '#64748b',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            accent: '#3b82f6',
+                            accentHover: '#2563eb'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Smooth transitions & custom scrollbar */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .cart-drawer-transition {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast-transition {
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 text-center tracking-wide font-medium">
+        ✨ Free Standard Shipping on all orders over $60 | Discover Triple Tung Exclusive Brands
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="filterBrand('all')">
+                <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-xl shadow-sm tracking-tighter">
+                    3T
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900 leading-none">TRIPLE TUNG</h1>
+                    <span class="text-xs uppercase tracking-widest text-slate-500 font-medium">T-Shirts & Apparel</span>
+                </div>
+            </div>
+
+            <!-- Search and Action Bar -->
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block w-64">
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="Search shirts or brands..." 
+                        oninput="handleSearch(this.value)"
+                        class="w-full bg-slate-100 text-sm rounded-full pl-10 pr-4 py-2 border-none focus:outline-none focus:ring-2 focus:ring-slate-900 text-slate-800 placeholder-slate-400"
+                    >
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
+                <!-- Cart Button -->
+                <button 
+                    onclick="toggleCartDrawer(true)"
+                    class="relative flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 px-4 py-2.5 rounded-full font-medium transition active:scale-95"
+                    aria-label="Open Cart"
+                >
+                    <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="text-sm font-semibold hidden md:inline">Bag</span>
+                    <span id="nav-cart-count" class="bg-blue-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <!-- Hero Banner -->
+        <section class="relative rounded-2xl overflow-hidden bg-slate-900 text-white mb-10 shadow-lg">
+            <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#475569_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="relative z-10 px-6 py-12 md:py-16 md:px-12 max-w-2xl">
+                <span class="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
+                    New Season Drop
+                </span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight mb-4">
+                    Engineered Cotton. Uncompromising Fit.
+                </h2>
+                <p class="text-slate-300 text-base md:text-lg mb-6 leading-relaxed">
+                    Explore curated label collaborations from Triple Tung Originals, Urban Drift, Apex Athletic, and Vintage Thread Co.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="filterBrand('all')" class="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-100 transition shadow-sm">
+                        Shop All Tees
+                    </button>
+                    <button onclick="filterBrand('Triple Tung Originals')" class="bg-slate-800 text-slate-200 border border-slate-700 px-6 py-3 rounded-xl font-semibold text-sm hover:bg-slate-700 transition">
+                        Triple Tung Originals
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Filter Tabs -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight">Explore By Brand</h3>
+                    <p class="text-xs text-slate-500">Filter through our high-performance & lifestyle fabric lines</p>
+                </div>
+                <span id="results-count" class="text-xs font-medium text-slate-500">Showing all items</span>
+            </div>
+
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="brand-filters">
+                <button onclick="filterBrand('all')" data-brand="all" class="brand-pill active-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white transition shadow-sm">
+                    All Brands
+                </button>
+                <button onclick="filterBrand('Triple Tung Originals')" data-brand="Triple Tung Originals" class="brand-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                    Triple Tung Originals
+                </button>
+                <button onclick="filterBrand('Urban Drift')" data-brand="Urban Drift" class="brand-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                    Urban Drift
+                </button>
+                <button onclick="filterBrand('Apex Athletic')" data-brand="Apex Athletic" class="brand-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                    Apex Athletic
+                </button>
+                <button onclick="filterBrand('Vintage Thread Co.')" data-brand="Vintage Thread Co." class="brand-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                    Vintage Thread Co.
+                </button>
+            </div>
+        </section>
+
+        <section id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Product cards will be injected by JavaScript -->
+        </section>
+        
+        <!-- Empty State Container -->
+        <div id="no-products-msg" class="hidden text-center py-16">
+            <p class="text-slate-400 text-lg mb-2">No t-shirts match your filter.</p>
+            <button onclick="filterBrand('all')" class="text-blue-600 font-semibold text-sm hover:underline">Reset Brand Filters</button>
+        </div>
+    </main>
+
+    <!-- Cart Drawer Backdrop -->
+    <div id="cart-backdrop" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <!-- Cart Drawer Container -->
+    <div id="cart-drawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 translate-x-full cart-drawer-transition flex flex-col">
+        <!-- Drawer Header -->
+        <div class="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <h3 class="font-bold text-lg text-slate-900">Your Shopping Bag</h3>
+                <span id="drawer-item-badge" class="bg-slate-100 text-slate-700 text-xs px-2.5 py-0.5 rounded-full font-semibold">0 items</span>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Drawer Body: Cart Items -->
+        <div class="flex-grow overflow-y-auto px-6 py-4 divide-y divide-slate-100" id="cart-drawer-items">
+            <!-- Items populated by JS -->
+        </div>
+
+        <!-- Drawer Footer: Subtotal and Checkout -->
+        <div class="p-6 border-t border-slate-200 bg-slate-50 space-y-4">
+            <div class="space-y-1.5 text-sm">
+                <div class="flex justify-between text-slate-500">
+                    <span>Subtotal</span>
+                    <span id="drawer-subtotal" class="font-semibold text-slate-800">$0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-500">
+                    <span>Estimated Shipping</span>
+                    <span id="drawer-shipping" class="font-semibold text-emerald-600">Calculated at checkout</span>
+                </div>
+                <div class="border-t border-slate-200 pt-2 flex justify-between text-base font-bold text-slate-900">
+                    <span>Total</span>
+                    <span id="drawer-total">$0.00</span>
+                </div>
+            </div>
+
+            <button onclick="openCheckoutModal()" id="btn-drawer-checkout" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-4 rounded-xl transition duration-150 flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                <span>Proceed to Checkout</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeCheckoutModal()" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                    ✓
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">Confirm Order</h3>
+                    <p class="text-xs text-slate-500">Triple Tung T Shirts Secure Checkout</p>
+                </div>
+            </div>
+
+            <div id="checkout-summary-box" class="bg-slate-50 rounded-xl p-4 mb-6 border border-slate-200 text-sm">
+                <!-- Summary inserted dynamically -->
+            </div>
+
+            <form onsubmit="handlePlaceOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" required placeholder="Alex Mercer" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Shipping Email</label>
+                    <input type="email" required placeholder="alex@example.com" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                </div>
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="closeCheckoutModal()" class="w-1/2 py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-100 transition">Cancel</button>
+                    <button type="submit" class="w-1/2 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition shadow-sm">Complete Purchase</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-sm font-medium py-3 px-5 rounded-xl shadow-xl flex items-center gap-3 opacity-0 pointer-events-none toast-transition translate-y-4">
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toast-message">Item added to bag!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16 py-12 text-slate-500 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-extrabold text-slate-900">TRIPLE TUNG</span>
+                <span>• Premium Fabric Collective</span>
+            </div>
+            <p>© 2026 Triple Tung T Shirts. Designed with modern neutrals.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* Product catalog with high-res clothing photos and diverse brands */
+        const PRODUCTS = [
+            {
+                id: 1,
+                brand: "Triple Tung Originals",
+                name: "Heavyweight Core Tee",
+                price: 28.00,
+                color: "Chalk White",
+                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=700&q=80",
+                badge: "Bestseller",
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 2,
+                brand: "Triple Tung Originals",
+                name: "Signature Boxy Pocket Tee",
+                price: 32.00,
+                color: "Onyx Black",
+                image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=700&q=80",
+                badge: "Iconic",
+                sizes: ["M", "L", "XL"]
+            },
+            {
+                id: 3,
+                brand: "Urban Drift",
+                name: "Acid Wash Oversized Tee",
+                price: 36.00,
+                color: "Slate Charcoal",
+                image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=700&q=80",
+                badge: "Streetwear",
+                sizes: ["S", "M", "L", "2XL"]
+            },
+            {
+                id: 4,
+                brand: "Apex Athletic",
+                name: "AeroVent Seamless Training Tee",
+                price: 34.50,
+                color: "Heather Navy",
+                image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=700&q=80",
+                badge: "Performance",
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 5,
+                brand: "Vintage Thread Co.",
+                name: "Sun-Faded Heritage Crewneck",
+                price: 38.00,
+                color: "Vintage Sand",
+                image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=700&q=80",
+                badge: "Limited Run",
+                sizes: ["S", "M", "L"]
+            },
+            {
+                id: 6,
+                brand: "Urban Drift",
+                name: "Minimalist Typography Tee",
+                price: 30.00,
+                color: "Raw Natural",
+                image: "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?auto=format&fit=crop&w=700&q=80",
+                badge: "New",
+                sizes: ["M", "L", "XL"]
+            },
+            {
+                id: 7,
+                brand: "Apex Athletic",
+                name: "CoolTouch Moisture Performance Tee",
+                price: 35.00,
+                color: "Carbon Gray",
+                image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=700&q=80",
+                badge: "Active",
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 8,
+                brand: "Vintage Thread Co.",
+                name: "1980s Retro Slub Knit Tee",
+                price: 39.00,
+                color: "Washed Olive",
+                image: "https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&w=700&q=80",
+                badge: "Crafted",
+                sizes: ["M", "L", "XL"]
+            }
+        ];
+
+        /* Application State */
+        let cart = [];
+        let currentBrand = 'all';
+        let searchQuery = '';
+        const selectedSizes = {};
+
+        // Pre-select first size for all products
+        PRODUCTS.forEach(p => {
+            selectedSizes[p.id] = p.sizes[0];
+        });
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const noMsg = document.getElementById('no-products-msg');
+            const countLabel = document.getElementById('results-count');
+
+            const filtered = PRODUCTS.filter(product => {
+                const matchesBrand = currentBrand === 'all' || product.brand === currentBrand;
+                const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      product.brand.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesBrand && matchesSearch;
+            });
+
+            countLabel.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'shirt' : 'shirts'}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noMsg.classList.remove('hidden');
+                return;
+            }
+
+            noMsg.classList.add('hidden');
+            grid.innerHTML = filtered.map(product => {
+                const isSelectedSize = (sz) => selectedSizes[product.id] === sz ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200';
+                
+                return `
+                <div class="group bg-white rounded-2xl border border-slate-200/80 overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300">
+                    <!-- Image Box -->
+                    <div class="relative w-full aspect-[4/5] bg-slate-100 overflow-hidden">
+                        <img 
+                            src="${product.image}" 
+                            alt="${product.name}" 
+                            loading="lazy"
+                            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-slate-900 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                            ${product.badge}
+                        </span>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-5 flex flex-col flex-grow">
+                        <!-- Brand Label -->
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold uppercase tracking-wider text-blue-600">${product.brand}</span>
+                            <span class="text-xs text-slate-500 font-medium">${product.color}</span>
+                        </div>
+
+                        <!-- Product Title -->
+                        <h4 class="text-base font-bold text-slate-900 mb-2 leading-snug group-hover:text-blue-600 transition-colors">
+                            ${product.name}
+                        </h4>
+
+                        <!-- Price -->
+                        <p class="text-lg font-extrabold text-slate-900 mb-4">$${product.price.toFixed(2)}</p>
+
+                        <!-- Size Selector -->
+                        <div class="mb-4">
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Select Size</label>
+                            <div class="flex gap-1.5">
+                                ${product.sizes.map(sz => `
+                                    <button 
+                                        type="button" 
+                                        onclick="selectSize(${product.id}, '${sz}')" 
+                                        class="size-btn-${product.id}-${sz} border text-xs font-semibold px-2.5 py-1 rounded-md transition ${isSelectedSize(sz)}"
+                                    >
+                                        ${sz}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart CTA -->
+                        <div class="mt-auto pt-2">
+                            <button 
+                                onclick="addToCart(${product.id})"
+                                class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98] shadow-sm"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Add to Bag</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function selectSize(productId, size) {
+            selectedSizes[productId] = size;
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            product.sizes.forEach(sz => {
+                const btn = document.querySelector(`.size-btn-${productId}-${sz}`);
+                if (btn) {
+                    if (sz === size) {
+                        btn.className = `size-btn-${productId}-${sz} border text-xs font-semibold px-2.5 py-1 rounded-md transition bg-slate-900 text-white border-slate-900`;
+                    } else {
+                        btn.className = `size-btn-${productId}-${sz} border text-xs font-semibold px-2.5 py-1 rounded-md transition bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200`;
+                    }
+                }
+            });
+        }
+
+        function filterBrand(brandName) {
+            currentBrand = brandName;
+            
+            // Update filter pill UI
+            const pills = document.querySelectorAll('.brand-pill');
+            pills.forEach(pill => {
+                if (pill.getAttribute('data-brand') === brandName) {
+                    pill.className = "brand-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white transition shadow-sm";
+                } else {
+                    pill.className = "brand-pill whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition";
+                }
+            });
+
+            renderProducts();
+        }
+
+        function handleSearch(val) {
+            searchQuery = val;
+            renderProducts();
+        }
+
+        function addToCart(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const size = selectedSizes[productId] || product.sizes[0];
+            const existingItem = cart.find(item => item.id === productId && item.size === size);
+
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    brand: product.brand,
+                    price: product.price,
+                    image: product.image,
+                    size: size,
+                    qty: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`Added ${product.name} (${size}) to bag`);
+        }
+
+        function updateItemQty(index, delta) {
+            if (!cart[index]) return;
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((acc, item) => acc + item.qty, 0);
+            const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+            // Update Header and Badge Counters
+            document.getElementById('nav-cart-count').textContent = totalCount;
+            document.getElementById('drawer-item-badge').textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'}`;
+
+            // Update Drawer totals
+            document.getElementById('drawer-subtotal').textContent = `$${totalPrice.toFixed(2)}`;
+            document.getElementById('drawer-total').textContent = `$${totalPrice.toFixed(2)}`;
+
+            const checkoutBtn = document.getElementById('btn-drawer-checkout');
+            if (cart.length === 0) {
+                checkoutBtn.disabled = true;
+            } else {
+                checkoutBtn.disabled = false;
+            }
+
+            // Render Drawer List
+            const drawerContainer = document.getElementById('cart-drawer-items');
+            if (cart.length === 0) {
+                drawerContainer.innerHTML = `
+                    <div class="h-64 flex flex-col items-center justify-center text-center">
+                        <svg class="w-12 h-12 text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <p class="text-slate-600 font-semibold mb-1">Your bag is empty</p>
+                        <p class="text-xs text-slate-400">Add tees from our latest brand releases.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            drawerContainer.innerHTML = cart.map((item, index) => `
+                <div class="py-4 flex gap-4 items-center">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-20 object-cover rounded-lg bg-slate-100 flex-shrink-0" />
+                    <div class="flex-grow">
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">${item.brand}</span>
+                        <h4 class="text-sm font-bold text-slate-900 leading-tight">${item.name}</h4>
+                        <span class="text-xs text-slate-500 font-medium">Size: ${item.size}</span>
+                        <div class="text-sm font-semibold text-slate-900 mt-1">$${(item.price * item.qty).toFixed(2)}</div>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden">
+                            <button onclick="updateItemQty(${index}, -1)" class="px-2 py-1 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold">-</button>
+                            <span class="px-2.5 text-xs font-semibold text-slate-800">${item.qty}</span>
+                            <button onclick="updateItemQty(${index}, 1)" class="px-2 py-1 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="removeItem(${index})" class="text-[11px] text-slate-400 hover:text-rose-500 transition">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-backdrop');
+            if (open) {
+                backdrop.classList.remove('opacity-0', 'pointer-events-none');
+                backdrop.classList.add('opacity-100');
+                drawer.classList.remove('translate-x-full');
+            } else {
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }, 2500);
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            toggleCartDrawer(false);
+
+            const modal = document.getElementById('checkout-modal');
+            const summary = document.getElementById('checkout-summary-box');
+            const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+            summary.innerHTML = `
+                <div class="font-semibold text-slate-800 mb-2">Order Summary (${cart.length} unique items):</div>
+                <ul class="divide-y divide-slate-200/60 max-h-36 overflow-y-auto mb-3">
+                    ${cart.map(item => `
+                        <li class="py-1.5 flex justify-between text-xs">
+                            <span class="text-slate-600">${item.qty}x ${item.name} (${item.brand}, ${item.size})</span>
+                            <span class="font-bold text-slate-800">$${(item.price * item.qty).toFixed(2)}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+                <div class="border-t border-slate-200 pt-2 flex justify-between font-bold text-slate-900">
+                    <span>Amount Due</span>
+                    <span>$${totalPrice.toFixed(2)}</span>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        function handlePlaceOrder(e) {
+            e.preventDefault();
+            closeCheckoutModal();
+            cart = [];
+            updateCartUI();
+            showToast("Order placed successfully! Check your email confirmation.");
+        }
+
+        // Initialize application on load
+        window.onload = function() {
+            renderProducts();
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>
