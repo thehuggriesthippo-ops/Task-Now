@@ -199,9 +199,9 @@
         >
             <div class="p-3 space-y-1">
                 <!-- Navigation Items -->
-                <button onclick="switchView('my-day')" id="nav-my-day" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-gold-400 bg-gold-900/30 border border-gold-500/20 transition">
+                <button onclick="switchView('my-day')" id="nav-my-day" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition text-gold-400 bg-gold-900/30 border border-gold-500/20">
                     <div class="flex items-center gap-3">
-                        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                         <span>My Day</span>
@@ -209,7 +209,7 @@
                     <span id="badge-my-day" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-300">0</span>
                 </button>
 
-                <button onclick="switchView('upcoming')" id="nav-upcoming" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-dark-muted hover:text-white hover:bg-dark-card transition">
+                <button onclick="switchView('upcoming')" id="nav-upcoming" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition text-dark-muted hover:text-white hover:bg-dark-card border border-transparent">
                     <div class="flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -219,7 +219,7 @@
                     <span id="badge-upcoming" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-dark-card text-dark-muted">0</span>
                 </button>
 
-                <button onclick="switchView('calendar')" id="nav-calendar" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-dark-muted hover:text-white hover:bg-dark-card transition">
+                <button onclick="switchView('calendar')" id="nav-calendar" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition text-dark-muted hover:text-white hover:bg-dark-card border border-transparent">
                     <div class="flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -229,7 +229,7 @@
                     <span class="text-[9px] uppercase font-bold text-gold-400 bg-gold-900/50 px-1.5 py-0.5 rounded border border-gold-500/30">Live</span>
                 </button>
 
-                <button onclick="switchView('all-tasks')" id="nav-all-tasks" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-dark-muted hover:text-white hover:bg-dark-card transition">
+                <button onclick="switchView('all-tasks')" id="nav-all-tasks" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition text-dark-muted hover:text-white hover:bg-dark-card border border-transparent">
                     <div class="flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
@@ -586,10 +586,21 @@
         ];
 
         /* Helpers to generate dynamic relative dates for realistic previews */
+        function toLocalDateString(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+
         function getRelativeDate(offsetDays) {
             const d = new Date();
             d.setDate(d.getDate() + offsetDays);
-            return d.toISOString().split('T')[0];
+            return toLocalDateString(d);
+        }
+
+        function getTodayString() {
+            return toLocalDateString(new Date());
         }
 
         /* Default Seed Tasks */
@@ -713,10 +724,6 @@
             populateListSelects();
         }
 
-        function getTodayString() {
-            return new Date().toISOString().split('T')[0];
-        }
-
         function formatDisplayDate(dateStr) {
             if (!dateStr) return 'No Date';
             const today = getTodayString();
@@ -785,23 +792,16 @@
         }
 
         function updateStatsAndBadges() {
+            // Ensure boolean values for completed status logic
             tasks.forEach(t => {
                 t.completed = t.completed === true || t.completed === 'true' || t.completed === 1;
             });
-            const total = tasks.length;
-            const completed = tasks.filter(t => t.completed).length;
-            const pending = total - completed;
-            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-            document.getElementById('completion-percentage').textContent = `${percentage}%`;
-            document.getElementById('completion-progress-bar').style.width = `${percentage}%`;
-            document.getElementById('stat-completed-count').textContent = `${completed} done`;
-            document.getElementById('stat-pending-count').textContent = `${pending} pending`;
-
-            // Sidebar badges
+            
+            // Calculate global sidebar badges (only showing pending tasks)
             const todayStr = getTodayString();
+            
             const myDayCount = tasks.filter(t => t.dueDate === todayStr && !t.completed).length;
-            const upcomingCount = tasks.filter(t => t.dueDate && t.dueDate >= todayStr && !t.completed).length;
+            const upcomingCount = tasks.filter(t => !t.completed).length;
             const allCount = tasks.filter(t => !t.completed).length;
 
             document.getElementById('badge-my-day').textContent = myDayCount;
@@ -809,58 +809,88 @@
             document.getElementById('badge-all-tasks').textContent = allCount;
 
             renderSidebarLists();
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            let viewTasks = [];
+            
+            if (currentView === 'my-day') {
+                const today = getTodayString();
+                viewTasks = tasks.filter(t => t.dueDate === today);
+            } else if (currentView === 'all-tasks' || currentView === 'upcoming' || currentView === 'calendar') {
+                viewTasks = tasks; 
+            } else {
+                viewTasks = tasks.filter(t => t.listId === currentView);
+            }
+
+            const total = viewTasks.length;
+            const completed = viewTasks.filter(t => t.completed).length;
+            const pending = total - completed;
+            
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('completion-percentage').textContent = `${percentage}%`;
+            document.getElementById('completion-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('stat-completed-count').textContent = `${completed} done`;
+            document.getElementById('stat-pending-count').textContent = `${pending} pending`;
         }
 
         function switchView(viewKey) {
             currentView = viewKey;
 
-            // Hide/Show View Containers
-            const taskListView = document.getElementById('view-task-list');
-            const upcomingView = document.getElementById('view-upcoming');
-            const calendarView = document.getElementById('view-calendar');
+            // Hide all view containers initially
+            document.getElementById('view-task-list').classList.add('hidden');
+            document.getElementById('view-upcoming').classList.add('hidden');
+            document.getElementById('view-calendar').classList.add('hidden');
 
-            taskListView.classList.add('hidden');
-            upcomingView.classList.add('hidden');
-            calendarView.classList.add('hidden');
-
-            // Reset navigation tab button styles
-            document.querySelectorAll('.nav-item').forEach(el => {
-                el.className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-dark-muted hover:text-white hover:bg-dark-card transition';
+            // --- BUG FIX: Safely update CSS classes for main Navigation Tabs AND their inner Badges ---
+            const mainTabs = ['my-day', 'upcoming', 'calendar', 'all-tasks'];
+            mainTabs.forEach(tab => {
+                const btn = document.getElementById('nav-' + tab);
+                const badge = document.getElementById('badge-' + tab);
+                if (!btn) return;
+                
+                if (viewKey === tab) {
+                    btn.className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-gold-400 bg-gold-900/30 border border-gold-500/20 transition';
+                    if(badge) badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-300';
+                } else {
+                    btn.className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-dark-muted hover:text-white hover:bg-dark-card transition border border-transparent';
+                    if(badge) badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-dark-card text-dark-muted';
+                }
             });
+            // -----------------------------------------------------------------------------------------
 
             if (viewKey === 'upcoming') {
-                upcomingView.classList.remove('hidden');
-                document.getElementById('nav-upcoming').className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-gold-400 bg-gold-900/30 border border-gold-500/20 transition';
+                document.getElementById('view-upcoming').classList.remove('hidden');
                 renderUpcomingSchedule();
             } else if (viewKey === 'calendar') {
-                calendarView.classList.remove('hidden');
-                document.getElementById('nav-calendar').className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-gold-400 bg-gold-900/30 border border-gold-500/20 transition';
+                document.getElementById('view-calendar').classList.remove('hidden');
                 renderCalendar();
             } else {
-                taskListView.classList.remove('hidden');
+                document.getElementById('view-task-list').classList.remove('hidden');
                 if (viewKey === 'my-day') {
-                    document.getElementById('nav-my-day').className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-gold-400 bg-gold-900/30 border border-gold-500/20 transition';
                     document.getElementById('view-title').textContent = 'My Day';
                     document.getElementById('view-badge').textContent = 'Today';
                     document.getElementById('view-subtitle').textContent = 'Focus on what matters most today before midnight.';
                 } else if (viewKey === 'all-tasks') {
-                    document.getElementById('nav-all-tasks').className = 'nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-gold-400 bg-gold-900/30 border border-gold-500/20 transition';
                     document.getElementById('view-title').textContent = 'All Tasks';
                     document.getElementById('view-badge').textContent = 'Global';
                     document.getElementById('view-subtitle').textContent = 'Full catalog of active and finished objectives.';
                 } else {
-                    // Custom list view
                     const currentList = lists.find(l => l.id === viewKey);
                     if (currentList) {
                         document.getElementById('view-title').textContent = `${currentList.icon} ${currentList.name}`;
                         document.getElementById('view-badge').textContent = 'List';
                         document.getElementById('view-subtitle').textContent = `Tasks specifically assigned to the ${currentList.name} workspace.`;
+                        document.getElementById('quick-task-list').value = currentList.id; 
                     }
                 }
                 renderTasksList();
             }
 
             renderSidebarLists();
+            updateProgressBar();
         }
 
         function renderCurrentView() {
@@ -870,7 +900,6 @@
         function getFilteredTasks() {
             let filtered = [...tasks];
 
-            // Apply Search filter if any
             if (searchQuery.trim() !== '') {
                 const q = searchQuery.toLowerCase();
                 return filtered.filter(t => 
@@ -880,7 +909,6 @@
                 );
             }
 
-            // View Filtering
             if (currentView === 'my-day') {
                 const today = getTodayString();
                 filtered = filtered.filter(t => t.dueDate === today);
@@ -889,16 +917,13 @@
             } else if (currentView === 'upcoming' || currentView === 'calendar') {
                 // handled by their own renders
             } else {
-                // Custom list
                 filtered = filtered.filter(t => t.listId === currentView);
             }
 
-            // Priority filter
             if (currentPriorityFilter !== 'all') {
                 filtered = filtered.filter(t => t.priority === currentPriorityFilter);
             }
 
-            // Sort: High priority first, then due time, then created
             return filtered.sort((a, b) => {
                 if (a.completed !== b.completed) return a.completed ? 1 : -1;
                 const priorityWeight = { high: 3, medium: 2, low: 1 };
@@ -939,7 +964,6 @@
             const isToday = task.dueDate === getTodayString();
             const isOverdue = task.dueDate && task.dueDate < getTodayString() && !task.completed;
 
-            // Priority styling
             let priorityBadge = '';
             if (task.priority === 'high') {
                 priorityBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gold-500/20 text-gold-300 border border-gold-500/40">High</span>`;
@@ -960,7 +984,6 @@
                     class="group bg-dark-surface border ${task.priority === 'high' ? 'border-gold-500/30' : 'border-dark-border'} rounded-2xl p-3.5 sm:p-4 hover:border-gold-500/60 hover:bg-dark-card transition-all flex items-start justify-between gap-3 shadow-sm"
                 >
                     <div class="flex items-start gap-3 flex-1 min-w-0">
-                        <!-- Custom Google-style Checkbox -->
                         <button 
                             onclick="toggleTaskStatus('${task.id}')" 
                             class="mt-0.5 w-5 h-5 rounded-lg border-2 ${task.completed ? 'bg-gold-500 border-gold-500 text-black' : 'border-dark-muted/60 hover:border-gold-400'} flex items-center justify-center transition flex-shrink-0"
@@ -983,18 +1006,15 @@
                             ${task.notes ? `<p class="text-xs text-dark-muted mt-1 line-clamp-1">${task.notes}</p>` : ''}
 
                             <div class="flex items-center gap-3 mt-2 flex-wrap">
-                                <!-- List badge -->
                                 <span class="inline-flex items-center gap-1 text-[11px] font-medium text-dark-muted bg-dark-card px-2 py-0.5 rounded-md border border-dark-border">
                                     <span>${listObj.icon}</span>
                                     <span>${listObj.name}</span>
                                 </span>
-
                                 ${dueDateDisplay}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Quick Actions -->
                     <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button onclick="openTaskModal('${task.id}')" class="p-1.5 rounded-lg text-dark-muted hover:text-gold-400 hover:bg-dark-base transition" title="Edit Task">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
@@ -1203,7 +1223,6 @@
                             <span class="text-[9px] text-dark-muted/60 opacity-0 group-hover:opacity-100 transition-opacity font-bold">+ Add</span>
                         </div>
 
-                        <!-- Task badges for this day -->
                         <div class="space-y-1 flex-1 overflow-y-auto max-h-20 custom-scrollbar pr-0.5">
                             ${dayTasks.map(t => {
                                 const isHigh = t.priority === 'high';
@@ -1327,7 +1346,6 @@
             if (!title) return;
 
             if (id) {
-                // Update existing
                 const task = tasks.find(t => t.id === id);
                 if (task) {
                     task.title = title;
@@ -1339,7 +1357,6 @@
                 }
                 showToast('Task updated');
             } else {
-                // Create new
                 const newTask = {
                     id: 'task-' + Date.now(),
                     title: title,
@@ -1454,7 +1471,7 @@
     </script>
 
 <!-- Backup & Restore Controls -->
-<div class="backup-controls">
+<div class="backup-controls hidden">
   <button type="button" onclick="exportTasks()">Export Backup</button>
   <button type="button" onclick="document.getElementById('import-file').click()">Import Backup</button>
   <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importTasks(event)">
